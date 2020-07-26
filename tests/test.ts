@@ -21,6 +21,12 @@ class MyClass {
     static staticNum = 32;
     instanceStr = 'inst';
 }
+
+function overriddenToString() {}
+overriddenToString.toString = () => {
+    throw new Error('`fn.toString()` should not be called');
+};
+
 const selfRefExpr = {
     a: 32,
     b: 'ok',
@@ -35,6 +41,7 @@ const expressions: { [s: string]: any } = {
     someArray: [ 1, 'foo', Math, null, undefined, false ],
     badNames: { "*": 10, "default": true, "with": 10, "  ": 3 },
     someClass: MyClass,
+    overriddenToString,
 };
 
 function checkDeclarationBaseline(name: string, content: string) {

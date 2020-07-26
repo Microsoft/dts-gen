@@ -1,6 +1,7 @@
 import * as dom from 'dts-dom';
 import { create, reservedWords } from 'dts-dom';
 import { getDTName } from './names';
+import { stringifyFunction } from './util';
 import * as ts from 'typescript';
 
 const enum ValueTypes {
@@ -369,7 +370,7 @@ function inferParameterType(_fn: ts.FunctionExpression, _param: ts.ParameterDecl
 }
 
 function parseFunctionBody(fn: any): ts.FunctionExpression {
-    const setup = `const myFn = ${fn.toString()};`;
+    const setup = `const myFn = ${stringifyFunction(fn)};`;
     const srcFile = ts.createSourceFile('test.ts', setup, ts.ScriptTarget.Latest, true);
     const statement = srcFile.statements[0] as ts.VariableStatement;
     const decl = statement.declarationList.declarations[0];
@@ -378,5 +379,5 @@ function parseFunctionBody(fn: any): ts.FunctionExpression {
 }
 
 function isNativeFunction(fn: any) {
-    return fn.toString().indexOf('{ [native code] }') > 0;
+    return stringifyFunction(fn).indexOf('{ [native code] }') > 0;
 }
