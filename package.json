@@ -22,6 +22,7 @@
     "lodash": "latest",
     "mocha": "^3.0.2",
     "react": "latest",
+    "shx": "^0.3.3",
     "tslint": "^5.1.0",
     "webpack": "^1.13.1"
   },
@@ -30,7 +31,7 @@
   ],
   "preferGlobal": true,
   "scripts": {
-    "test": "mocha bin/tests/test.js",
+    "test": "shx cp -r ./tests/fixtures/ ./bin/tests && mocha bin/tests/test.js",
     "build": "tsc",
     "build-browser": "tsc -p browser && webpack",
     "lint": "tslint --project tsconfig.json --format stylish"

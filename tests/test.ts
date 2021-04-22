@@ -37,6 +37,11 @@ const expressions: { [s: string]: any } = {
     someClass: MyClass,
 };
 
+const expressionFiles: { [s: string]: any } = {
+    simple: path.join(__dirname, "fixtures", "simple.js"),
+    requireJquery: path.join(__dirname, "fixtures", "require-jquery.js"),
+};
+
 function checkDeclarationBaseline(name: string, content: string) {
     const filename = path.join(__dirname, `../../baselines/${name}`);
     const existing = fs.existsSync(filename) ? fs.readFileSync(filename, 'utf-8') : '<none>';
@@ -60,6 +65,15 @@ describe("Expression tests", () => {
         it(`Generates the same declaration for ${key}`, () => {
             const result = tsg.generateIdentifierDeclarationFile(key!, expressions[key!]);
             checkDeclarationBaseline(`expr-${key}.d.ts`, result);
+        });
+    }
+});
+
+describe("Expression file test", () => {
+    for (const key of Object.keys(expressionFiles)) {
+        it(`Generates the same declaration for ${key}`, () => {
+            const result = tsg.generateIdentifierDeclarationFile(key!, require(expressionFiles[key!]));
+            checkDeclarationBaseline(`${key}.d.ts`, result);
         });
     }
 });
