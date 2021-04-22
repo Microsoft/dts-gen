@@ -83,8 +83,7 @@ try {
         const filename = args['expression-file'];
         name = path.basename(filename, path.extname(filename)).replace(/[^A-Za-z0-9]/g, '_');
         (module as any).paths.unshift(process.cwd() + '/node_modules');
-        const fileContent = fs.readFileSync(filename, "utf-8");
-        result = guess.generateIdentifierDeclarationFile(name, eval(fileContent));
+        result = guess.generateIdentifierDeclarationFile(name, require(path.resolve(filename)));
     } else if (args.identifier) {
         if (args.name) throw new ArgsError('Cannot use --name with --identifier');
         if (args.module || args.expression) throw new ArgsError('Cannot specify more than one input');
